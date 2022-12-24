@@ -1,0 +1,18 @@
+{
+  "name": "ehr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tryCall.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "web3": "^1.8.1",
+    "web3-providers-ws": "^1.8.1",
+    "xlsx": "^0.18.5"
+  }
+}
