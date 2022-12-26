@@ -1,12 +1,12 @@
 'use strict';
 import fs from 'fs';
-const csv = fs.readFileSync('./admTestData104.csv');
+const csv = fs.readFileSync('./admTestData105.csv');
 const array = csv.toString().split('\r\n').join().split(',');
 
 import xlsx from 'xlsx';
 // const xlsx = require('xlsx');
 // Opening log file
-let wb = xlsx.readFile('./write_timestamp104.xlsx');
+let wb = xlsx.readFile('./write_timestamp105.xlsx');
 let ws = wb.Sheets['Sheet1'];
 
 const headers = array.splice(0, 10);
@@ -34,7 +34,7 @@ import {
   admStrCtrl as contractAddr,
   coinbaseAddr,
   node_ip_port as node,
-} from './storageDetails104.js';
+} from './storageDetails105.js';
 
 const init = async () => {
   const beginEachTimeStamp = new Date().getTime();
@@ -50,7 +50,7 @@ const init = async () => {
   }
 
   console.log('\n');
-  console.log(`<============= WRITING INTO CHAIN-104 =============>\n`);
+  console.log(`<============= WRITING INTO CHAIN-105 =============>\n`);
   // Sleep Function
   const sleep = (milliseconds) => {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -111,7 +111,7 @@ const init = async () => {
     ];
 
     xlsx.utils.sheet_add_aoa(ws, newRow, { origin: -1 });
-    xlsx.writeFile(wb, './write_timestamp104.xlsx');
+    xlsx.writeFile(wb, './write_timestamp105.xlsx');
   }
   let endTimeStamp = new Date().getTime();
   console.log(`\nEnding TimeStamp: ${endTimeStamp}\n`);
