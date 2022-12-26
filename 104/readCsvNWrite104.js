@@ -1,12 +1,12 @@
 'use strict';
 import fs from 'fs';
-const csv = fs.readFileSync('./admTestData103.csv');
+const csv = fs.readFileSync('./admTestData104.csv');
 const array = csv.toString().split('\r\n').join().split(',');
 
 import xlsx from 'xlsx';
 // const xlsx = require('xlsx');
 // Opening log file
-let wb = xlsx.readFile('./write_timestamp103.xlsx');
+let wb = xlsx.readFile('./write_timestamp104.xlsx');
 let ws = wb.Sheets['Sheet1'];
 
 const headers = array.splice(0, 10);
@@ -34,7 +34,7 @@ import {
   admStrCtrl as contractAddr,
   coinbaseAddr,
   node_ip_port as node,
-} from './storageDetails103.js';
+} from './storageDetails104.js';
 
 const init = async () => {
   const beginEachTimeStamp = new Date().getTime();
@@ -111,7 +111,7 @@ const init = async () => {
     ];
 
     xlsx.utils.sheet_add_aoa(ws, newRow, { origin: -1 });
-    xlsx.writeFile(wb, './write_timestamp103.xlsx');
+    xlsx.writeFile(wb, './write_timestamp104.xlsx');
   }
   let endTimeStamp = new Date().getTime();
   console.log(`\nEnding TimeStamp: ${endTimeStamp}\n`);

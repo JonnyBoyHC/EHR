@@ -52,9 +52,9 @@ const init = async () => {
   console.log('\n');
   console.log(`<============= WRITING INTO CHAIN-102 =============>\n`);
   // Sleep Function
-  // const sleep = (milliseconds) => {
-  //   return new Promise((resolve) => setTimeout(resolve, milliseconds));
-  // };
+  const sleep = (milliseconds) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
 
   // Writing Records into Local chain
   for (let i = 0; i < allPatients.length; i++) {
@@ -85,7 +85,7 @@ const init = async () => {
     // Writing Records
     const beginEachTimeStamp = new Date().getTime();
     console.log(`Beginning Each TimeStamp: ${beginEachTimeStamp}\n`);
-    await contractAccess.methods
+    contractAccess.methods
       .addNewPatient(_subjectID, [
         _hadmID,
         new Date(_admitTime).getTime(),
@@ -98,7 +98,7 @@ const init = async () => {
       ])
       .send({ from: coinbaseAddr });
 
-    // await sleep(200);
+    await sleep(1);
 
     let endEachTimeStamp = new Date().getTime();
     console.log(`\nEnding Each TimeStamp: ${endEachTimeStamp}\n`);
