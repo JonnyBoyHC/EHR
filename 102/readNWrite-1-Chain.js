@@ -31,7 +31,13 @@ import {
   node_ip_port as node103,
 } from '../103/storageDetails103.js';
 
+
 const init = async () => {
+
+  // Sleep Function
+  const sleep = (milliseconds) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
 
   const beginEachTimeStamp = new Date().getTime();
   console.log(`Beginning TimeStamp: ${beginEachTimeStamp}\n`);
@@ -43,50 +49,77 @@ const init = async () => {
   const contractAccess103 = new web103.eth.Contract(abi103, contractAddr103);
 
   let counter102 = 0;
-  let resultTotal102 = [];
+  let resultTotal102 = {};
   let resultTemp102 = [];
 
   let counter103 = 0;
-  let resultTotal103 = [];
+  let resultTotal103 = {};
   let resultTemp103 = [];
 
+
+
   for (let i = parseInt(startNo); i < parseInt(stopNo) + 1; i++) {
-    console.log(`Patient ID: ${i}`);
     resultTemp102 = await contractAccess102.methods.getAllRecords(i).call({ from: coinbaseAddr102 });
-    resultTotal102.push(resultTemp102);
-
+    counter102 += resultTemp102.length;
+    resultTotal102[i] = resultTemp102;
   }
 
   for (let i = parseInt(startNo); i < parseInt(stopNo) + 1; i++) {
-    console.log(`Patient ID: ${i}`);
     resultTemp103 = await contractAccess103.methods.getAllRecords(i).call({ from: coinbaseAddr103 });
-    resultTotal103.push(resultTemp103);
-
+    counter103 += resultTemp103.length;
+    resultTotal103[i] = resultTemp103;
   }
 
-  resultTotal102.forEach(patient => patient.forEach(record => ++counter102))
-  resultTotal102.forEach(patient => patient.forEach(record => console.log(record.HadmID)))
-  console.log(counter102);
 
-  resultTotal103.forEach(patient => patient.forEach(record => ++counter103))
-  resultTotal103.forEach(patient => patient.forEach(record => console.log(record.HadmID)))
-  console.log(counter103);
+  let counter = 0;
+  console.log('<<==========================<<   102   >>==========================>>');
+  for (let i = +startNo; i < +stopNo + 1; i++) {
+    console.log(`Patient ID: ${i}`);
+    // console.log(resultTotal102[i].forEach(patient => console.log(patient)));
+    ++counter;
+  }
 
-  // let result103 = await contractAccess103.methods.getAllRecords(args[0]).call({from: coinbaseAddr103});
+  console.log('Total Patients: ', counter);
+  console.log('Total Records: ', counter102, '\n');
 
-  // console.log('<<==========================<<   102   >>==========================>>');
 
-  // for (let i = 0; i < result102.length; i++) {
-  //   console.log(result102[i]);
-  // }
+  console.log('\n');
+  console.log('<<==========================<<   103   >>==========================>>');
+  console.log('\n');
 
-  // console.log('\n');
-  // console.log('<<==========================<<   103   >>==========================>>');
-  // console.log('\n');
+  counter = 0;
+  for (let i = +startNo; i < +stopNo + 1; i++) {
+    console.log(`Patient ID: ${i}`);
+    // console.log(resultTotal103[i].forEach(patient => console.log(patient)));
+    ++counter;
+  }
 
-  // for (let i = 0; i < result103.length; i++) {
-  //   console.log(result103[i]);
-  // }
+  console.log('Total Patients: ', counter);
+  console.log('Total Records: ', counter103, '\n');
+
+  // Writing Records into Chain103
+  for (let i = +startNo; i < +stopNo + 1; i++) {
+    console.log('\nWriting... Patient ID:', i, '\n');
+
+    // Writing Records
+    for (let j = 0; j < resultTotal103[i].length; j++) {
+      console.log(resultTotal103[i][j].HadmID);
+      contractAccess102.methods
+        .addNewPatient(i, [
+          +resultTotal103[i][j].HadmID,
+          +resultTotal103[i][j].AdmitTime,
+          +resultTotal103[i][j].DischTime,
+          +resultTotal103[i][j].DeathTime,
+          resultTotal103[i][j].Admission_Type,
+          resultTotal103[i][j].Admission_Location,
+          resultTotal103[i][j].Discharge_Location,
+          resultTotal103[i][j].Insurance,
+        ])
+        .send({ from: coinbaseAddr102 });
+      await sleep(20);
+    }
+  }
+  console.log('\nTotal Records of 102: ', counter102, '\n');
 
 };
 
