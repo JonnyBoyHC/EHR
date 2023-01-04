@@ -104,19 +104,19 @@ const init = async () => {
     // Writing Records
     for (let j = 0; j < resultTotal103[i].length; j++) {
       console.log(resultTotal103[i][j].HadmID);
-      contractAccess102.methods
-        .addNewPatient(i, [
-          +resultTotal103[i][j].HadmID,
-          +resultTotal103[i][j].AdmitTime,
-          +resultTotal103[i][j].DischTime,
-          +resultTotal103[i][j].DeathTime,
-          resultTotal103[i][j].Admission_Type,
-          resultTotal103[i][j].Admission_Location,
-          resultTotal103[i][j].Discharge_Location,
-          resultTotal103[i][j].Insurance,
-        ])
-        .send({ from: coinbaseAddr102 });
-      await sleep(20);
+      // contractAccess102.methods
+      //   .addNewPatient(i, [
+      //     +resultTotal103[i][j].HadmID,
+      //     +resultTotal103[i][j].AdmitTime,
+      //     +resultTotal103[i][j].DischTime,
+      //     +resultTotal103[i][j].DeathTime,
+      //     resultTotal103[i][j].Admission_Type,
+      //     resultTotal103[i][j].Admission_Location,
+      //     resultTotal103[i][j].Discharge_Location,
+      //     resultTotal103[i][j].Insurance,
+      //   ])
+      //   .send({ from: coinbaseAddr102 });
+      // await sleep(50);
     }
   }
   console.log('\nTotal Records of 102: ', counter102, '\n');
