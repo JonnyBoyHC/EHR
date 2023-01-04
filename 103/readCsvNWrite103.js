@@ -98,7 +98,7 @@ const init = async () => {
       ])
       .send({ from: coinbaseAddr });
 
-    await sleep(1);
+    await sleep(50);
 
     let endEachTimeStamp = new Date().getTime();
     console.log(`\nEnding Each TimeStamp: ${endEachTimeStamp}\n`);
