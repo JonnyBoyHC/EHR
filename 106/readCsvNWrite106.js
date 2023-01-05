@@ -6,7 +6,7 @@ const array = csv.toString().split('\r\n').join().split(',');
 import xlsx from 'xlsx';
 // const xlsx = require('xlsx');
 // Opening log file
-let wb = xlsx.readFile('./write_timestamp106.xlsx');
+let wb = xlsx.readFile('./readCsvNWrite106.xlsx');
 let ws = wb.Sheets['Sheet1'];
 
 const headers = array.splice(0, 10);
@@ -37,8 +37,8 @@ import {
 } from './storageDetails106.js';
 
 const init = async () => {
-  const beginEachTimeStamp = new Date().getTime();
-  console.log(`Beginning TimeStamp: ${beginEachTimeStamp}\n`);
+  const beginTimeStamp = new Date().getTime();
+  console.log(`Beginning TimeStamp: ${beginTimeStamp}\n`);
 
   const web3 = new Web3(node);
 
@@ -111,7 +111,7 @@ const init = async () => {
     ];
 
     xlsx.utils.sheet_add_aoa(ws, newRow, { origin: -1 });
-    xlsx.writeFile(wb, './write_timestamp106.xlsx');
+    xlsx.writeFile(wb, './readCsvNWrite106.xlsx');
   }
   let endTimeStamp = new Date().getTime();
   console.log(`\nEnding TimeStamp: ${endTimeStamp}\n`);
