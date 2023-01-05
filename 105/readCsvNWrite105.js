@@ -1,6 +1,6 @@
 'use strict';
 import fs from 'fs';
-const csv = fs.readFileSync('./admTestData105.csv');
+const csv = fs.readFileSync('./adm105.csv');
 const array = csv.toString().split('\r\n').join().split(',');
 
 import xlsx from 'xlsx';
