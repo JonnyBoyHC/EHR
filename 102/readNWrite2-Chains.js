@@ -43,8 +43,8 @@ console.log('Total Patients: ', counter);
 
 const init = async () => {
 
-  const beginEachTimeStamp = new Date().getTime();
-  console.log(`Beginning TimeStamp: ${beginEachTimeStamp}\n`);
+  const beginTimeStamp = new Date().getTime();
+  console.log(`Beginning TimeStamp: ${beginTimeStamp}\n`);
 
   const web102 = new Web3(node102);
   const web103 = new Web3(node103);
@@ -60,25 +60,32 @@ const init = async () => {
   let resultTotal103 = {};
   let resultTemp103 = [];
 
+
+  console.log('<<==========================<<   102   >>==========================>>');
+  const startReadingTime102 = new Date().getTime();
+  console.log(`Start Reading 102 TimeStamp: ${startReadingTime102}\n`);
   for (let i = parseInt(startNo); i < parseInt(stopNo) + 1; i++) {
     resultTemp102 = await contractAccess102.methods.getAllRecords(i).call({ from: coinbaseAddr102 });
     counter102 += resultTemp102.length;
     resultTotal102[i] = resultTemp102;
   }
+  console.log('Total Records: ', counter102, '\n');
+
+  console.log('<<==========================<<   103   >>==========================>>');
+  const startReadingTime103 = new Date().getTime();
+  console.log(`Start Reading 103 TimeStamp: ${startReadingTime103}\n`);
 
   for (let i = parseInt(startNo); i < parseInt(stopNo) + 1; i++) {
     resultTemp103 = await contractAccess103.methods.getAllRecords(i).call({ from: coinbaseAddr103 });
     counter103 += resultTemp103.length;
     resultTotal103[i] = resultTemp103;
   }
-
-  console.log('<<==========================<<   102   >>==========================>>');
-  console.log('Total Records: ', counter102, '\n');
-
-  console.log('<<==========================<<   103   >>==========================>>');
   console.log('Total Records: ', counter103, '\n');
 
+  // '<<==========================<<   Comparing   >>==========================>>
   // Comparing
+  const startComparingTime = new Date().getTime();
+  console.log(`Start Comparing TimeStamp: ${startComparingTime}\n`);
   let results = {};
   let tempCount = 1;
   let finalResults = {};
@@ -102,6 +109,8 @@ const init = async () => {
 
 
   console.log('<<=======================<<   Writing...   >>=======================>>');
+  const startWritingTime = new Date().getTime();
+  console.log(`Start Writing TimeStamp: ${startWritingTime}\n`);
   // Writing Records into Chain102
   for (let i = +startNo; i < +stopNo + 1; i++) {
     if (results[i].length === 0) {
