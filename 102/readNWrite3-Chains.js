@@ -108,7 +108,7 @@ const init = async () => {
     console.log(`Start Comparing TimeStamp: ${startComparingTime}\n`);
     let results1 = [];
     let results2 = [];
-    let finalResults = {};
+    let finalResults = [];
 
     // Comparing 103 to 102
     let forDeletion1 = [];
@@ -149,10 +149,10 @@ const init = async () => {
         }
       }
 
-      finalResults[i] = results1.filter((item) => !forDeletion3.includes(item));
+      finalResults = results1.filter((item) => !forDeletion3.includes(item));
 
-      if (finalResults[i].length === 0) {
-        finalResults[i] = results1;
+      if (finalResults.length === 0) {
+        finalResults = results1;
       }
     } else if (results2.length !== 0) {
       for (var x = 0; x < results2.length; x++) {
@@ -163,15 +163,15 @@ const init = async () => {
         }
       }
 
-      finalResults[i] = results2.filter((item) => !forDeletion3.includes(item));
+      finalResults = results2.filter((item) => !forDeletion3.includes(item));
 
-      if (finalResults[i].length === 0) {
-        finalResults[i] = results2;
+      if (finalResults.length === 0) {
+        finalResults = results2;
       }
     }
 
     console.log('finalResults: ');
-    console.log(finalResults[i]);
+    console.log(finalResults);
 
 
     console.log('<<=======================<<   Writing...   >>=======================>>');
@@ -180,35 +180,35 @@ const init = async () => {
     const startWritingTime = new Date().getTime();
     console.log(`Start Writing TimeStamp: ${startWritingTime}\n`);
 
-    if (results[i].length === 0) {
+    if (finalResults.length === 0) {
       console.log(`Nothing to write for Patient ID ${i}...!!!`);
     } else {
       console.log('Writing... Patient ID:', i);
     }
 
-    //   // Writing Records
-    //   for (let j = 0; j < results[i].length; j++) {
-    //     console.log(results[i][j].HadmID);
-    //   contractAccess102.methods
-    //     .addNewPatient(i, [
-    //       +results[i][j].HadmID,
-    //       +results[i][j].AdmitTime,
-    //       +results[i][j].DischTime,
-    //       +results[i][j].DeathTime,
-    //       results[i][j].Admission_Type,
-    //       results[i][j].Admission_Location,
-    //       results[i][j].Discharge_Location,
-    //       results[i][j].Insurance,
-    //     ])
-    //     .send({ from: coinbaseAddr102 });
-    //   await sleep(50);
-    // }
+    // Writing Records
+    for (let j = 0; j < finalResults.length; j++) {
+      console.log(finalResults[j].HadmID);
+      contractAccess102.methods
+        .addNewPatient(i, [
+          +finalResults[j].HadmID,
+          +finalResults[j].AdmitTime,
+          +finalResults[j].DischTime,
+          +finalResults[j].DeathTime,
+          finalResults[j].Admission_Type,
+          finalResults[j].Admission_Location,
+          finalResults[j].Discharge_Location,
+          finalResults[j].Insurance,
+        ])
+        .send({ from: coinbaseAddr102 });
+      await sleep(50);
+    }
 
     let endTimeStamp = new Date().getTime();
     console.log(`\nEnding TimeStamp: ${endTimeStamp}\n`);
     let timeDifference = endTimeStamp - startReadingTime102;
     console.log(`Time Differences: ${timeDifference}\n`);
-    // console.log(`Total Number of Records to write: ${results[i].length}\n`);
+    console.log(`Total Number of Records to write: ${finalResults.length}\n`);
 
     // Writing to log file
     let newRow = [
@@ -221,15 +221,14 @@ const init = async () => {
         startWritingTime,
         endTimeStamp,
         timeDifference,
-        // results[i].length,
+        finalResults.length,
       ],
     ];
 
     xlsx.utils.sheet_add_aoa(ws, newRow, { origin: -1 });
   }
 
-
-  // xlsx.writeFile(wb, './readNWrite3-Chains.xlsx');
+  xlsx.writeFile(wb, './readNWrite3-Chains.xlsx');
 
   console.log('Done!!!\n');
 
