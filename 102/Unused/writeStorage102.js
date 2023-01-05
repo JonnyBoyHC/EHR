@@ -7,7 +7,7 @@ import {
   storageAddr as contractAddr,
   coinbaseAddr,
   node_ip_port as node,
-} from './storageDetails102.js';
+} from '../storageDetails102.js';
 
 /*
   This is an example for terminal input, user is free to change input method base on their own requirements.

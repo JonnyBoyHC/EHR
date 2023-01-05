@@ -57,38 +57,38 @@ const init = async () => {
   let resultTotal103 = {};
   let resultTemp103 = [];
 
-  for (let i = +startNo; i < +stopNo + 1; i++) {
-    console.log('<<==========================<<   102   >>==========================>>');
-    const startReadingTime102 = new Date().getTime();
-    console.log(`Start Reading 102 TimeStamp: ${startReadingTime102}\n`);
 
+  console.log('<<==========================<<   102   >>==========================>>');
+  const startReadingTime102 = new Date().getTime();
+  console.log(`Start Reading 102 TimeStamp: ${startReadingTime102}\n`);
+
+  for (let i = parseInt(startNo); i < parseInt(stopNo) + 1; i++) {
     resultTemp102 = await contractAccess102.methods.getAllRecords(i).call({ from: coinbaseAddr102 });
     counter102 += resultTemp102.length;
     resultTotal102[i] = resultTemp102;
+  }
+  console.log('Total Records: ', counter102, '\n');
 
-    console.log('Total Records: ', counter102, '\n');
+  console.log('<<==========================<<   103   >>==========================>>');
+  const startReadingTime103 = new Date().getTime();
+  console.log(`Start Reading 103 TimeStamp: ${startReadingTime103}\n`);
 
-    console.log('<<==========================<<   103   >>==========================>>');
-    const startReadingTime103 = new Date().getTime();
-    console.log(`Start Reading 103 TimeStamp: ${startReadingTime103}\n`);
-
-
+  for (let i = parseInt(startNo); i < parseInt(stopNo) + 1; i++) {
     resultTemp103 = await contractAccess103.methods.getAllRecords(i).call({ from: coinbaseAddr103 });
     counter103 += resultTemp103.length;
     resultTotal103[i] = resultTemp103;
+  }
+  console.log('Total Records: ', counter103, '\n');
 
-    console.log('Total Records: ', counter103, '\n');
-
-    console.log('<<==================<<   Final Items to Add...   >>==================>>');
-    // '<<==========================<<   Comparing   >>==========================>>
-    // Comparing
-    const startComparingTime = new Date().getTime();
-    console.log(`Start Comparing TimeStamp: ${startComparingTime}\n`);
-    let results = {};
-    let tempCount = 1;
-    let finalResults = {};
-    // Each patient
-
+  // '<<==========================<<   Comparing   >>==========================>>
+  // Comparing
+  const startComparingTime = new Date().getTime();
+  console.log(`Start Comparing TimeStamp: ${startComparingTime}\n`);
+  let results = {};
+  let tempCount = 1;
+  let finalResults = {};
+  // Each patient
+  for (let i = +startNo; i < +stopNo + 1; i++) {
     // Each record
     let forDeletion1 = [];
 
@@ -100,14 +100,15 @@ const init = async () => {
       }
     }
     results[i] = resultTotal103[i].filter((item) => !forDeletion1.includes(item));
+  }
+
+  console.log('<<==================<<   Final Items to Add...   >>==================>>');
+  console.log(results);
 
 
-    console.log(results);
-
-
-    console.log('<<=======================<<   Writing...   >>=======================>>');
-    // Writing Records into Chain102
-
+  console.log('<<=======================<<   Writing...   >>=======================>>');
+  // Writing Records into Chain102
+  for (let i = +startNo; i < +stopNo + 1; i++) {
     const startWritingTime = new Date().getTime();
     console.log(`Start Writing TimeStamp: ${startWritingTime}\n`);
 
@@ -137,31 +138,31 @@ const init = async () => {
 
     let endTimeStamp = new Date().getTime();
     console.log(`\nEnding TimeStamp: ${endTimeStamp}\n`);
-    let timeDifference = endTimeStamp - startReadingTime102;
+    let timeDifference = endTimeStamp - beginTimeStamp;
     console.log(`Time Differences: ${timeDifference}\n`);
-    console.log(`Number of Records: ${results[i].length}\n`);
-
-    // Writing to log file
-    let newRow = [
-      [
-        i,
-        startReadingTime102,
-        startReadingTime103,
-        startComparingTime,
-        startWritingTime,
-        endTimeStamp,
-        timeDifference,
-        results[i].length,
-      ],
-    ];
-
-    xlsx.utils.sheet_add_aoa(ws, newRow, { origin: -1 });
+    // console.log(`Number of Records: ${finalResults.length}\n`);
   }
 
 
+  // // Writing to log file
+  // let newRow = [
+  //   [
+  //     args[0],
+  //     beginTimeStamp,
+  //     readTime_C,
+  //     ReadTime_B,
+  //     ReadTime_A,
+  //     comparisonTime,
+  //     endTimeStamp,
+  //     timeDifference,
+  //     finalResults.length,
+  //   ],
+  // ];
+
+  xlsx.utils.sheet_add_aoa(ws, newRow, { origin: -1 });
   xlsx.writeFile(wb, './readNWrite2-Chains.xlsx');
 
-  console.log('Done!!!\n');
+  // console.log('Done!!!\n');
 
 };
 
