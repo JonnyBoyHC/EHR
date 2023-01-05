@@ -2,7 +2,7 @@
 import fs from 'fs';
 import xlsx from 'xlsx';
 // Opening log file
-let wb = xlsx.readFile('./readNWrite4-Chains.xlsx');
+let wb = xlsx.readFile('./readNWrite3-Chains.xlsx');
 let ws = wb.Sheets['Sheet1'];
 
 let args = process.argv.slice(2);
@@ -33,13 +33,6 @@ import {
   node_ip_port as node104,
 } from '../104/storageDetails104.js';
 
-import {
-  admStrCtrlAbi as abi105,
-  admStrCtrl as contractAddr105,
-  coinbaseAddr as coinbaseAddr105,
-  node_ip_port as node105,
-} from '../105/storageDetails105.js';
-
 // Sleep Function
 const sleep = (milliseconds) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -55,12 +48,10 @@ const init = async () => {
   const web102 = new Web3(node102);
   const web103 = new Web3(node103);
   const web104 = new Web3(node104);
-  const web105 = new Web3(node105);
 
   const contractAccess102 = new web102.eth.Contract(abi102, contractAddr102);
   const contractAccess103 = new web103.eth.Contract(abi103, contractAddr103);
   const contractAccess104 = new web104.eth.Contract(abi104, contractAddr104);
-  const contractAccess105 = new web105.eth.Contract(abi105, contractAddr105);
 
   let counter102 = 0;
   let resultTotal102 = {};
@@ -73,10 +64,6 @@ const init = async () => {
   let counter104 = 0;
   let resultTotal104 = {};
   let resultTemp104 = [];
-
-  let counter105 = 0;
-  let resultTotal105 = {};
-  let resultTemp105 = [];
 
   for (let i = +startNo; i < +stopNo + 1; i++) {
     console.log('####################################################################################');
@@ -114,17 +101,6 @@ const init = async () => {
 
     console.log('Total Records: ', counter104, '\n');
 
-    console.log('<<==========================<<   105   >>==========================>>');
-    const startReadingTime105 = new Date().getTime();
-    console.log(`Start Reading 105 TimeStamp: ${startReadingTime105}\n`);
-
-
-    resultTemp105 = await contractAccess105.methods.getAllRecords(i).call({ from: coinbaseAddr105 });
-    counter105 += resultTemp105.length;
-    resultTotal105[i] = resultTemp105;
-
-    console.log('Total Records: ', counter105, '\n');
-
     console.log('<<==================<<   Final Items to Add...   >>==================>>');
     // '<<==========================<<   Comparing   >>==========================>>
     // Comparing
@@ -132,7 +108,6 @@ const init = async () => {
     console.log(`Start Comparing TimeStamp: ${startComparingTime}\n`);
     let results1 = [];
     let results2 = [];
-    let results3 = [];
     let finalResults = [];
 
     // Comparing 103 to 102
@@ -214,18 +189,18 @@ const init = async () => {
     // Writing Records
     for (let j = 0; j < finalResults.length; j++) {
       console.log(finalResults[j].HadmID);
-      // contractAccess102.methods
-      //   .addNewPatient(i, [
-      //     +finalResults[j].HadmID,
-      //     +finalResults[j].AdmitTime,
-      //     +finalResults[j].DischTime,
-      //     +finalResults[j].DeathTime,
-      //     finalResults[j].Admission_Type,
-      //     finalResults[j].Admission_Location,
-      //     finalResults[j].Discharge_Location,
-      //     finalResults[j].Insurance,
-      //   ])
-      //   .send({ from: coinbaseAddr102 });
+      contractAccess102.methods
+        .addNewPatient(i, [
+          +finalResults[j].HadmID,
+          +finalResults[j].AdmitTime,
+          +finalResults[j].DischTime,
+          +finalResults[j].DeathTime,
+          finalResults[j].Admission_Type,
+          finalResults[j].Admission_Location,
+          finalResults[j].Discharge_Location,
+          finalResults[j].Insurance,
+        ])
+        .send({ from: coinbaseAddr102 });
       await sleep(50);
     }
 
@@ -253,7 +228,7 @@ const init = async () => {
     xlsx.utils.sheet_add_aoa(ws, newRow, { origin: -1 });
   }
 
-  // xlsx.writeFile(wb, './readNWrite4-Chains.xlsx');
+  xlsx.writeFile(wb, './readNWrite3-Chains.xlsx');
 
   console.log('Done!!!\n');
 
