@@ -233,7 +233,7 @@ const init = async () => {
       for (var x = 0; x < results105102.length; x++) {
         for (var y = 0; y < results103104.length; y++) {
           if (JSON.stringify(results105102[x]) === JSON.stringify(results103104[y])) {
-            forDeletion3.push(results105102[x]);
+            forDeletion5.push(results105102[x]);
           }
         }
       }

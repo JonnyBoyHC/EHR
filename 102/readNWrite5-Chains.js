@@ -40,6 +40,13 @@ import {
   node_ip_port as node105,
 } from '../105/storageDetails105.js';
 
+import {
+  admStrCtrlAbi as abi106,
+  admStrCtrl as contractAddr106,
+  coinbaseAddr as coinbaseAddr106,
+  node_ip_port as node106,
+} from '../106/storageDetails106.js';
+
 // Sleep Function
 const sleep = (milliseconds) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -56,11 +63,13 @@ const init = async () => {
   const web103 = new Web3(node103);
   const web104 = new Web3(node104);
   const web105 = new Web3(node105);
+  const web106 = new Web3(node106);
 
   const contractAccess102 = new web102.eth.Contract(abi102, contractAddr102);
   const contractAccess103 = new web103.eth.Contract(abi103, contractAddr103);
   const contractAccess104 = new web104.eth.Contract(abi104, contractAddr104);
   const contractAccess105 = new web105.eth.Contract(abi105, contractAddr105);
+  const contractAccess106 = new web106.eth.Contract(abi106, contractAddr106);
 
   let counter102 = 0;
   let resultTotal102 = {};
@@ -77,6 +86,10 @@ const init = async () => {
   let counter105 = 0;
   let resultTotal105 = {};
   let resultTemp105 = [];
+
+  let counter106 = 0;
+  let resultTotal106 = {};
+  let resultTemp106 = [];
 
   for (let i = +startNo; i < +stopNo + 1; i++) {
     console.log('####################################################################################');
@@ -125,6 +138,17 @@ const init = async () => {
 
     console.log('Total Records: ', counter105, '\n');
 
+    console.log('<<==========================<<   106   >>==========================>>');
+    const startReadingTime106 = new Date().getTime();
+    console.log(`Start Reading 106 TimeStamp: ${startReadingTime106}\n`);
+
+
+    resultTemp106 = await contractAccess106.methods.getAllRecords(i).call({ from: coinbaseAddr106 });
+    counter106 += resultTemp106.length;
+    resultTotal106[i] = resultTemp106;
+
+    console.log('Total Records: ', counter106, '\n');
+
     console.log('<<==================<<   Final Items to Add...   >>==================>>');
     // '<<==========================<<   Comparing   >>==========================>>
     // Comparing
@@ -133,7 +157,10 @@ const init = async () => {
     let results103102 = [];
     let results104102 = [];
     let results105102 = [];
+    let results106102 = [];
+
     let results103104 = [];
+    let results105103104 = [];
     let finalResults = [];
 
     // Comparing 103 to 102
@@ -178,18 +205,32 @@ const init = async () => {
     console.log('results105102: ');
     console.log(results105102);
 
-    // Comparing results of 103 and 104
+    // Comparing 106 to 102
     let forDeletion4 = [];
+    for (let j = 0; j < resultTotal106[i].length; j++) {
+      for (let k = 0; k < resultTotal102[i].length; k++) {
+        if (JSON.stringify(resultTotal106[i][j]) === JSON.stringify(resultTotal102[i][k])) {
+          forDeletion4.push(resultTotal106[i][j]);
+        }
+      }
+    }
+    results106102 = resultTotal106[i].filter((item) => !forDeletion4.includes(item));
+
+    console.log('results106102: ');
+    console.log(results106102);
+
+    // Comparing results of 103 and 104
+    let forDeletion5 = [];
     if (results103102.length !== 0) {
       for (var x = 0; x < results103102.length; x++) {
         for (var y = 0; y < results104102.length; y++) {
           if (JSON.stringify(results103102[x]) === JSON.stringify(results104102[y])) {
-            forDeletion4.push(results103102[x]);
+            forDeletion5.push(results103102[x]);
           }
         }
       }
 
-      results103104 = results103102.filter((item) => !forDeletion4.includes(item));
+      results103104 = results103102.filter((item) => !forDeletion5.includes(item));
 
       if (results103104.length === 0) {
         results103104 = results103102;
@@ -198,12 +239,12 @@ const init = async () => {
       for (var x = 0; x < results104102.length; x++) {
         for (var y = 0; y < results103102.length; y++) {
           if (JSON.stringify(results104102[x]) === JSON.stringify(results103102[y])) {
-            forDeletion4.push(results104102[x]);
+            forDeletion5.push(results104102[x]);
           }
         }
       }
 
-      results103104 = results104102.filter((item) => !forDeletion4.includes(item));
+      results103104 = results104102.filter((item) => !forDeletion5.includes(item));
 
       if (results103104.length === 0) {
         results103104 = results104102;
@@ -214,34 +255,69 @@ const init = async () => {
     console.log(results103104);
 
     // Comparing results of 105 to 103 & 104
-    let forDeletion5 = [];
+    let forDeletion6 = [];
     if (results103104.length !== 0) {
       for (var x = 0; x < results103104.length; x++) {
         for (var y = 0; y < results105102.length; y++) {
           if (JSON.stringify(results103104[x]) === JSON.stringify(results105102[y])) {
-            forDeletion5.push(results103104[x]);
+            forDeletion6.push(results103104[x]);
           }
         }
       }
 
-      finalResults = results103104.filter((item) => !forDeletion5.includes(item));
+      results105103104 = results103104.filter((item) => !forDeletion6.includes(item));
 
-      if (finalResults.length === 0) {
-        finalResults = results103104;
+      if (results105103104.length === 0) {
+        results105103104 = results103104;
       }
     } else if (results105102.length !== 0) {
       for (var x = 0; x < results105102.length; x++) {
         for (var y = 0; y < results103104.length; y++) {
           if (JSON.stringify(results105102[x]) === JSON.stringify(results103104[y])) {
-            forDeletion3.push(results105102[x]);
+            forDeletion6.push(results105102[x]);
           }
         }
       }
 
-      finalResults = results105102.filter((item) => !forDeletion5.includes(item));
+      results105103104 = results105102.filter((item) => !forDeletion6.includes(item));
+
+      if (results105103104.length === 0) {
+        results105103104 = results105102;
+      }
+    }
+
+    console.log('results105103104: ');
+    console.log(results105103104);
+
+    // Comparing results of 106 to 103 & 104 & 105
+    let forDeletion7 = [];
+    if (results105103104.length !== 0) {
+      for (var x = 0; x < results105103104.length; x++) {
+        for (var y = 0; y < results106102.length; y++) {
+          if (JSON.stringify(results105103104[x]) === JSON.stringify(results106102[y])) {
+            forDeletion7.push(results105103104[x]);
+          }
+        }
+      }
+
+      finalResults = results105103104.filter((item) => !forDeletion7.includes(item));
 
       if (finalResults.length === 0) {
-        finalResults = results105102;
+        finalResults = results105103104;
+      }
+    } else if (results106102.length !== 0) {
+      for (var x = 0; x < results106102.length; x++) {
+        for (var y = 0; y < results105103104.length; y++) {
+          if (JSON.stringify(results106102[x]) === JSON.stringify(results105103104[y])) {
+            forDeletion7.push(results106102[x]);
+          }
+        }
+      }
+
+      finalResults = results106102.filter((item) => !forDeletion7.includes(item));
+
+      if (finalResults.length === 0) {
+        finalResults = results106102;
       }
     }
 
