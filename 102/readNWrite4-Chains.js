@@ -130,9 +130,10 @@ const init = async () => {
     // Comparing
     const startComparingTime = new Date().getTime();
     console.log(`Start Comparing TimeStamp: ${startComparingTime}\n`);
-    let results1 = [];
-    let results2 = [];
-    let results3 = [];
+    let results103102 = [];
+    let results104102 = [];
+    let results105102 = [];
+    let results103104 = [];
     let finalResults = [];
 
     // Comparing 103 to 102
@@ -144,10 +145,10 @@ const init = async () => {
         }
       }
     }
-    results1 = resultTotal103[i].filter((item) => !forDeletion1.includes(item));
+    results103102 = resultTotal103[i].filter((item) => !forDeletion1.includes(item));
 
-    console.log('results1: ');
-    console.log(results1);
+    console.log('results103102: ');
+    console.log(results103102);
 
     // Comparing 104 to 102
     let forDeletion2 = [];
@@ -158,40 +159,89 @@ const init = async () => {
         }
       }
     }
-    results2 = resultTotal103[i].filter((item) => !forDeletion1.includes(item));
+    results104102 = resultTotal104[i].filter((item) => !forDeletion2.includes(item));
 
-    console.log('results2: ');
-    console.log(results2);
+    console.log('results104102: ');
+    console.log(results104102);
+
+    // Comparing 105 to 102
+    let forDeletion3 = [];
+    for (let j = 0; j < resultTotal105[i].length; j++) {
+      for (let k = 0; k < resultTotal102[i].length; k++) {
+        if (JSON.stringify(resultTotal105[i][j]) === JSON.stringify(resultTotal102[i][k])) {
+          forDeletion3.push(resultTotal105[i][j]);
+        }
+      }
+    }
+    results105102 = resultTotal105[i].filter((item) => !forDeletion3.includes(item));
+
+    console.log('results105102: ');
+    console.log(results105102);
 
     // Comparing results of 103 and 104
-    let forDeletion3 = [];
-    if (results1.length !== 0) {
-      for (var x = 0; x < results1.length; x++) {
-        for (var y = 0; y < results2.length; y++) {
-          if (JSON.stringify(results1[x]) === JSON.stringify(results2[y])) {
-            forDeletion3.push(results1[x]);
+    let forDeletion4 = [];
+    if (results103102.length !== 0) {
+      for (var x = 0; x < results103102.length; x++) {
+        for (var y = 0; y < results104102.length; y++) {
+          if (JSON.stringify(results103102[x]) === JSON.stringify(results104102[y])) {
+            forDeletion4.push(results103102[x]);
           }
         }
       }
 
-      finalResults = results1.filter((item) => !forDeletion3.includes(item));
+      results103104 = results103102.filter((item) => !forDeletion4.includes(item));
 
-      if (finalResults.length === 0) {
-        finalResults = results1;
+      if (results103104.length === 0) {
+        results103104 = results103102;
       }
-    } else if (results2.length !== 0) {
-      for (var x = 0; x < results2.length; x++) {
-        for (var y = 0; y < results1.length; y++) {
-          if (JSON.stringify(results2[x]) === JSON.stringify(results1[y])) {
-            forDeletion3.push(results2[x]);
+    } else if (results104102.length !== 0) {
+      for (var x = 0; x < results104102.length; x++) {
+        for (var y = 0; y < results103102.length; y++) {
+          if (JSON.stringify(results104102[x]) === JSON.stringify(results103102[y])) {
+            forDeletion4.push(results104102[x]);
           }
         }
       }
 
-      finalResults = results2.filter((item) => !forDeletion3.includes(item));
+      results103104 = results104102.filter((item) => !forDeletion4.includes(item));
+
+      if (results103104.length === 0) {
+        results103104 = results104102;
+      }
+    }
+
+    console.log('results103104: ');
+    console.log(results103104);
+
+    // Comparing results of 105 to 103 & 104
+    let forDeletion5 = [];
+    if (results103104.length !== 0) {
+      for (var x = 0; x < results103104.length; x++) {
+        for (var y = 0; y < results105102.length; y++) {
+          if (JSON.stringify(results103104[x]) === JSON.stringify(results105102[y])) {
+            forDeletion5.push(results103104[x]);
+          }
+        }
+      }
+
+      finalResults = results103104.filter((item) => !forDeletion5.includes(item));
 
       if (finalResults.length === 0) {
-        finalResults = results2;
+        finalResults = results103104;
+      }
+    } else if (results105102.length !== 0) {
+      for (var x = 0; x < results105102.length; x++) {
+        for (var y = 0; y < results103104.length; y++) {
+          if (JSON.stringify(results105102[x]) === JSON.stringify(results103104[y])) {
+            forDeletion3.push(results105102[x]);
+          }
+        }
+      }
+
+      finalResults = results105102.filter((item) => !forDeletion5.includes(item));
+
+      if (finalResults.length === 0) {
+        finalResults = results105102;
       }
     }
 
@@ -242,6 +292,7 @@ const init = async () => {
         startReadingTime102,
         startReadingTime103,
         startReadingTime104,
+        startReadingTime105,
         startComparingTime,
         startWritingTime,
         endTimeStamp,

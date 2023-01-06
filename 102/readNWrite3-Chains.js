@@ -133,7 +133,7 @@ const init = async () => {
         }
       }
     }
-    results2 = resultTotal103[i].filter((item) => !forDeletion1.includes(item));
+    results2 = resultTotal104[i].filter((item) => !forDeletion2.includes(item));
 
     console.log('results2: ');
     console.log(results2);
