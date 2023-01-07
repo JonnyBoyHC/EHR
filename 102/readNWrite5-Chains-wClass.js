@@ -64,12 +64,9 @@ class Web3Connection {
     return await this.contractAccess.methods.getAllRecords(_subjectID).call({ from: this.coinbaseAddr });
   }
 
-  writeNetwork(_)
-
   readingTime = () => {
     return this.startReadingTime = new Date().getTime();
   }
-
 }
 
 class Comparison {
@@ -136,43 +133,6 @@ class Comparison {
   }
 }
 
-// class DataWriter {
-//   constructor(contract, data) {
-//     this.contract = contract;
-//     this.data = data;
-//   }
-
-//   async write(patientId) {
-//     let startWritingTime = new Date().getTime();
-//     console.log(`Start Writing TimeStamp: ${startWritingTime}\n`);
-
-//     if (this.data.length === 0) {
-//       console.log(`Nothing to write for Patient ID ${patientId}...!!!`);
-//     } else {
-//       console.log('Writing... Patient ID:', patientId);
-//     }
-
-//     // Writing Records
-//     for (let i = 0; i < this.data.length; i++) {
-//       console.log(this.data[i].HadmID);
-//       this.contract.methods
-//         .addNewPatient(patientId, [
-//           +this.data[i].HadmID,
-//           +this.data[i].AdmitTime,
-//           +this.data[i].DischTime,
-//           +this.data[i].DeathTime,
-//           this.data[i].Admission_Type,
-//           this.data[i].Admission_Location,
-//           this.data[i].Discharge_Location,
-//           this.data[i].Insurance,
-//         ])
-//         .send({ from: coinbaseAddr102 });
-//       await sleep(50);
-//     }
-//   }
-// }
-
-
 const beginTimeStamp = new Date().getTime();
 console.log(`Beginning TimeStamp: ${beginTimeStamp} \n`);
 
@@ -193,61 +153,55 @@ const init = async () => {
     console.log(`Start Reading 102 TimeStamp: ${network102.readingTime()}`);
     const result102 = await network102.accessNetwork(i);
 
-    console.log(`Start Reading 103 TimeStamp: ${network103.readingTime()}\n`);
+    console.log(`Start Reading 103 TimeStamp: ${network103.readingTime()}`);
     const result103 = await network103.accessNetwork(i);
 
-    console.log(`Start Reading 104 TimeStamp: ${network104.readingTime()}\n`);
+    console.log(`Start Reading 104 TimeStamp: ${network104.readingTime()}`);
     const result104 = await network104.accessNetwork(i);
 
-    console.log(`Start Reading 105 TimeStamp: ${network105.readingTime()}\n`);
+    console.log(`Start Reading 105 TimeStamp: ${network105.readingTime()}`);
     const result105 = await network105.accessNetwork(i);
 
-    console.log(`Start Reading 106 TimeStamp: ${network106.readingTime()}\n`);
+    console.log(`Start Reading 106 TimeStamp: ${network106.readingTime()}`);
     const result106 = await network106.accessNetwork(i);
 
     console.log('<<=====================<<   Comparing...   >>=====================>>');
     const comparison32 = new Comparison(result103, result102);
-    console.log(`Start Comparing TimeStamp: ${comparison32.comparingTime()}\n`);
+    console.log(`Start Comparing TimeStamp: ${comparison32.comparingTime()}`);
     comparison32.compare()
     console.log(comparison32.results);
 
     const comparison42 = new Comparison(result104, result102);
-    console.log(`Start Comparing TimeStamp: ${comparison42.comparingTime()}\n`);
+    console.log(`Start Comparing TimeStamp: ${comparison42.comparingTime()}`);
     comparison42.compare()
     console.log(comparison42.results);
 
     const comparison52 = new Comparison(result105, result102);
-    console.log(`Start Comparing TimeStamp: ${comparison52.comparingTime()}\n`);
+    console.log(`Start Comparing TimeStamp: ${comparison52.comparingTime()}`);
     comparison52.compare()
     console.log(comparison52.results);
 
     const comparison62 = new Comparison(result106, result102);
-    console.log(`Start Comparing TimeStamp: ${comparison62.comparingTime()}\n`);
+    console.log(`Start Comparing TimeStamp: ${comparison62.comparingTime()}`);
     comparison62.compare()
     console.log(comparison62.results);
 
     const comparison432 = new Comparison(comparison32.results, comparison42.results);
-    console.log(`Start Comparing TimeStamp: ${comparison432.comparingTime()}\n`);
+    console.log(`Start Comparing TimeStamp: ${comparison432.comparingTime()}`);
     comparison432.compare2()
     console.log(comparison432.finalResults);
 
     const comparison652 = new Comparison(comparison52.results, comparison62.results);
-    console.log(`Start Comparing TimeStamp: ${comparison652.comparingTime()}\n`);
+    console.log(`Start Comparing TimeStamp: ${comparison652.comparingTime()}`);
     comparison652.compare2()
     console.log(comparison652.finalResults);
 
     const comparison65432 = new Comparison(comparison432.finalResults, comparison652.finalResults);
-    console.log(`Start Comparing TimeStamp: ${comparison65432.comparingTime()}\n`);
+    console.log(`Start Comparing TimeStamp: ${comparison65432.comparingTime()}`);
     comparison65432.compare2()
     console.log(comparison65432.finalResults);
 
-
-
     console.log('<<=======================<<   Writing...   >>=======================>>');
-    // const contract = new web3.eth.Contract(...);
-    // const data = [{ id: 1, value: 10 }, { id: 2, value: 20 }, { id: 3, value: 30 }];
-    // const writer = new DataWriter(contract, data);
-    // writer.write(123);
 
     const startWritingTime = new Date().getTime();
     console.log(`Start Writing TimeStamp: ${startWritingTime}\n`);
@@ -261,22 +215,46 @@ const init = async () => {
     // Writing Records
     for (let j = 0; j < comparison65432.finalResults.length; j++) {
       console.log(comparison65432.finalResults[j].HadmID);
-      contractAccess102.methods
+      network102.contractAccess.methods
         .addNewPatient(i, [
-          +finalResults[j].HadmID,
-          +finalResults[j].AdmitTime,
-          +finalResults[j].DischTime,
-          +finalResults[j].DeathTime,
-          finalResults[j].Admission_Type,
-          finalResults[j].Admission_Location,
-          finalResults[j].Discharge_Location,
-          finalResults[j].Insurance,
+          +comparison65432.finalResults[j].HadmID,
+          +comparison65432.finalResults[j].AdmitTime,
+          +comparison65432.finalResults[j].DischTime,
+          +comparison65432.finalResults[j].DeathTime,
+          comparison65432.finalResults[j].Admission_Type,
+          comparison65432.finalResults[j].Admission_Location,
+          comparison65432.finalResults[j].Discharge_Location,
+          comparison65432.finalResults[j].Insurance,
         ])
         .send({ from: coinbaseAddr102 });
       await sleep(50);
     }
 
+    let endTimeStamp = new Date().getTime();
+    console.log(`\nEnding TimeStamp: ${endTimeStamp}\n`);
+    let timeDifference = endTimeStamp - network102.startReadingTime;
+    console.log(`Time Differences: ${timeDifference}\n`);
+    console.log(`Total Number of Records to write: ${comparison65432.finalResults.length}\n`);
+
+    // Writing to log file
+    let newRow = [
+      [
+        i,
+        network102.startReadingTime,
+        network103.startReadingTime,
+        network104.startReadingTime,
+        network105.startReadingTime,
+        comparison32.startComparingTime,
+        startWritingTime,
+        endTimeStamp,
+        timeDifference,
+        comparison65432.finalResults.length,
+      ],
+    ];
+
+    xlsx.utils.sheet_add_aoa(ws, newRow, { origin: -1 });
   }
+  // xlsx.writeFile(wb, './readNWrite4-Chains.xlsx');
 
   console.log('Done!!!\n');
 
