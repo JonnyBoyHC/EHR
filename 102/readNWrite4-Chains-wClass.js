@@ -233,7 +233,7 @@ const init = async () => {
 
     xlsx.utils.sheet_add_aoa(ws, newRow, { origin: -1 });
   }
-  // xlsx.writeFile(wb, './readNWrite4-Chains.xlsx');
+  xlsx.writeFile(wb, './readNWrite4-Chains.xlsx');
 
   console.log('Done!!!\n');
 

@@ -153,16 +153,16 @@ const init = async () => {
     console.log(`Start Reading 102 TimeStamp: ${network102.readingTime()}`);
     const result102 = await network102.accessNetwork(i);
 
-    console.log(`Start Reading 103 TimeStamp: ${network103.readingTime()}`);
+    console.log(`Start Reading 103 TimeStamp: ${network103.readingTime() - network102.startReadingTime}`);
     const result103 = await network103.accessNetwork(i);
 
-    console.log(`Start Reading 104 TimeStamp: ${network104.readingTime()}`);
+    console.log(`Start Reading 104 TimeStamp: ${network104.readingTime() - network103.startReadingTime}`);
     const result104 = await network104.accessNetwork(i);
 
-    console.log(`Start Reading 105 TimeStamp: ${network105.readingTime()}`);
+    console.log(`Start Reading 105 TimeStamp: ${network105.readingTime() - network104.startReadingTime}`);
     const result105 = await network105.accessNetwork(i);
 
-    console.log(`Start Reading 106 TimeStamp: ${network106.readingTime()}`);
+    console.log(`Start Reading 106 TimeStamp: ${network106.readingTime() - network105.startReadingTime}`);
     const result106 = await network106.accessNetwork(i);
 
     console.log('<<=====================<<   Comparing...   >>=====================>>');
