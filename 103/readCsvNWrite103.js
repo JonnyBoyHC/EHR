@@ -1,7 +1,8 @@
 'use strict';
 import fs from 'fs';
 const csv = fs.readFileSync('./adm103_13001-14000.csv');
-const array = csv.toString().split('\r\n').join().split(',');
+// const array = csv.toString().split('\r\n').join().split(',');
+const array = csv.toString().split(/\r?\n/).join().split(',');
 
 import xlsx from 'xlsx';
 // const xlsx = require('xlsx');
@@ -57,7 +58,8 @@ const init = async () => {
   };
 
   // Writing Records into Local chain
-  for (let i = 0; i < allPatients.length; i++) {
+  for (let i = 10; i < allPatients.length; i++) {
+    // for (let i = 0; i < allPatients.length; i++) {
     // for (let i = 0; i < 100; i++) {
     const _subjectID = +allPatients[i][1];
     const _hadmID = +allPatients[i][2];
@@ -82,6 +84,8 @@ const init = async () => {
     console.log('Insurance:', _insurance);
     console.log('\n');
 
+    await sleep(1);
+
     // Writing Records
     const beginEachTimeStamp = new Date().getTime();
     console.log(`Beginning Each TimeStamp: ${beginEachTimeStamp}\n`);
@@ -98,7 +102,6 @@ const init = async () => {
       ])
       .send({ from: coinbaseAddr });
 
-    // await sleep(50);
 
     let endEachTimeStamp = new Date().getTime();
     console.log(`\nEnding Each TimeStamp: ${endEachTimeStamp}\n`);
