@@ -1,6 +1,6 @@
 'use strict';
 import fs from 'fs';
-const csv = fs.readFileSync('./adm103_12001-13000.csv');
+const csv = fs.readFileSync('./adm103_13001-14000.csv');
 const array = csv.toString().split('\r\n').join().split(',');
 
 import xlsx from 'xlsx';
@@ -49,12 +49,12 @@ const init = async () => {
     return web3.utils.padRight(web3.utils.asciiToHex(string), 64);
   }
 
-  // console.log('\n');
-  // console.log(`<============= WRITING INTO CHAIN-103 =============>\n`);
-  // // Sleep Function
-  // const sleep = (milliseconds) => {
-  //   return new Promise((resolve) => setTimeout(resolve, milliseconds));
-  // };
+  console.log('\n');
+  console.log(`<============= WRITING INTO CHAIN-103 =============>\n`);
+  // Sleep Function
+  const sleep = (milliseconds) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
 
   // Writing Records into Local chain
   for (let i = 0; i < allPatients.length; i++) {
@@ -82,41 +82,41 @@ const init = async () => {
     console.log('Insurance:', _insurance);
     console.log('\n');
 
-    //   // Writing Records
-    //   const beginEachTimeStamp = new Date().getTime();
-    //   console.log(`Beginning Each TimeStamp: ${beginEachTimeStamp}\n`);
-    //   contractAccess.methods
-    //     .addNewPatient(_subjectID, [
-    //       _hadmID,
-    //       new Date(_admitTime).getTime(),
-    //       new Date(_dischargeTime).getTime(),
-    //       new Date(_deathTime).getTime(),
-    //       changeAscii2Hex(_admissionType),
-    //       changeAscii2Hex(_admissionLocation),
-    //       changeAscii2Hex(_dischargeLocation),
-    //       changeAscii2Hex(_insurance),
-    //     ])
-    //     .send({ from: coinbaseAddr });
+    // Writing Records
+    const beginEachTimeStamp = new Date().getTime();
+    console.log(`Beginning Each TimeStamp: ${beginEachTimeStamp}\n`);
+    contractAccess.methods
+      .addNewPatient(_subjectID, [
+        _hadmID,
+        new Date(_admitTime).getTime(),
+        new Date(_dischargeTime).getTime(),
+        new Date(_deathTime).getTime(),
+        changeAscii2Hex(_admissionType),
+        changeAscii2Hex(_admissionLocation),
+        changeAscii2Hex(_dischargeLocation),
+        changeAscii2Hex(_insurance),
+      ])
+      .send({ from: coinbaseAddr });
 
     // await sleep(50);
 
-    //   let endEachTimeStamp = new Date().getTime();
-    //   console.log(`\nEnding Each TimeStamp: ${endEachTimeStamp}\n`);
-    //   let timeDifference = endEachTimeStamp - beginEachTimeStamp;
-    //   console.log(`Time Differences: ${timeDifference}\n`);
+    let endEachTimeStamp = new Date().getTime();
+    console.log(`\nEnding Each TimeStamp: ${endEachTimeStamp}\n`);
+    let timeDifference = endEachTimeStamp - beginEachTimeStamp;
+    console.log(`Time Differences: ${timeDifference}\n`);
 
-    //   // Writing to log file
-    //   let newRow = [
-    //     [_subjectID, beginEachTimeStamp, endEachTimeStamp, timeDifference],
-    //   ];
+    // Writing to log file
+    let newRow = [
+      [_subjectID, beginEachTimeStamp, endEachTimeStamp, timeDifference],
+    ];
 
-    //   xlsx.utils.sheet_add_aoa(ws, newRow, { origin: -1 });
-    //   xlsx.writeFile(wb, './readCsvNWrite103.xlsx');
-    // }
-    // let endTimeStamp = new Date().getTime();
-    // console.log(`\nEnding TimeStamp: ${endTimeStamp}\n`);
-  };
+    xlsx.utils.sheet_add_aoa(ws, newRow, { origin: -1 });
+    xlsx.writeFile(wb, './readCsvNWrite103.xlsx');
+  }
+  let endTimeStamp = new Date().getTime();
+  console.log(`\nEnding TimeStamp: ${endTimeStamp}\n`);
 };
+
 init()
   .then(() => process.exit(0))
   .catch((error) => {
