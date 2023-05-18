@@ -30,7 +30,10 @@ const init = async () => {
   let result = []
   let results = []
 
-  for (let i = 13001; i <= 13050; i++) {
+  let starting_ID = 13001
+  let ending_ID = 14000
+
+  for (let i = starting_ID; i <= ending_ID; i++) {
     // for (let i = 0; i <= 10; i++) {
     result = await contractAccess.methods
       .getAllRecords(i)
@@ -48,24 +51,11 @@ const init = async () => {
       console.log(i)
       for (let j = 0; j < results[i].length; j++) {
         // console.log(results[i][j])
-        let returnRequest = `
-        HadmID: ${+results[i][j].HadmID}
-        AdmitTime: ${new Date(+results[i][j].AdmitTime).toUTCString()}
-        DischargeTime: ${new Date(+results[i][j].DischTime).toUTCString()}
-        DeathTime: ${+results[i][j].DeathTime === 0
-            ? 0
-            : new Date(+results[i][j].DeathTime).toUTCString()
-          }
-        Admission Type: ${hexToAsciiConversion(results[i][j].Admission_Type)}
-        Admission Location: ${hexToAsciiConversion(results[i][j].Admission_Location)}
-        Discharge Location: ${hexToAsciiConversion(results[i][j].Discharge_Location)}
-        Insurance: ${hexToAsciiConversion(results[i][j].Insurance)}\n`;
-        console.log(returnRequest);
-
         // Writing to log file
         let newRow = [
-          [i, beginEachTimeStamp, endEachTimeStamp, timeDifference],
+          [starting_ID + i, +results[i][j].HadmID],
         ];
+        console.log(newRow)
 
         xlsx.utils.sheet_add_aoa(ws, newRow, { origin: -1 });
         xlsx.writeFile(wb, './writeCounts103_13001-14000.xlsx');
